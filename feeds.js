@@ -4,12 +4,14 @@ var url = require('url');
 var app = http.createServer(function(req, res){
 
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Charset','utf8');
 
     var FeedParser = require('feedparser'),
         request = require('request');
 
     var url_parts = url.parse(req.url, true);
     var feedUrl = url_parts.query.feedUrl;
+    var callback = url_parts.query.callback;
 
     if (typeof feedUrl != "undefined") {
         console.log(feedUrl);
@@ -44,10 +46,10 @@ var app = http.createServer(function(req, res){
                 , item;
 
             while (item = stream.read()) {
-                console.log('Got article: %s', item.title || item.description);
+               // console.log('Got article: %s', item.title || item.description);
 
                 if (first) {
-                    res.write('[');
+                    res.write(callback + '([');
                     first = false;
                 } else {
                     res.write(',');
@@ -58,7 +60,7 @@ var app = http.createServer(function(req, res){
         });
 
         feedparser.on('end', function () {
-            res.write(']');
+            res.write(']);');
         });
 
         setTimeout(function () {
