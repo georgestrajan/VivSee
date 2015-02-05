@@ -1,9 +1,12 @@
 /**
  * Created by georgestrajan on 1/5/15.
  */
+
+"use strict";
+
 (function () {
 
-    var colorsArray = createColors(10);
+    var colorsArray = createColors(100);
 
     var feeds = ['http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml',
         'http://www.nytimes.com/services/xml/rss/nyt/InternationalHome.xml',
@@ -16,8 +19,6 @@
 
     for (var feedIndex = 0;feedIndex<feeds.length; feedIndex++) {
 
-        var backColorInt = ( Math.floor((Math.random() * 10) + 1));
-
         for (var i = 0; i < 10; i++) {
             var singleDiv = document.createElement('div');
 
@@ -25,7 +26,8 @@
             singleDiv.style.fontSize = "10px";
             singleDiv.style.height = divHeight + "px";
 
-            singleDiv.style.backgroundColor = "#AAB" + backColorInt.toString(16) + backColorInt.toString(16) + backColorInt.toString(16);
+            singleDiv.style.backgroundColor = colorsArray[feedIndex * i];
+            singleDiv.style.color = 'rgb(255,255,255)';
             singleDiv.innerHTML = feeds[feedIndex];
 
             if (i == 0) {
@@ -94,7 +96,7 @@
                         feedDiv.style.display = "none";
                     }
                 } else {
-                    alert('error finding div')
+                    alert('error finding div');
                 }
             }
         }
@@ -110,7 +112,7 @@
                     feedDiv.style.display = "none";
                 }
             } else {
-                alert('error finding div')
+                alert('error finding div');
             }
         }
     }
@@ -137,7 +139,7 @@
 
             showDivContent(divToFlip, currentlyShowingFeed[divToFlip]);
 
-        }, 10000);
+        }, 1000);
 
     }());
 

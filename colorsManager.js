@@ -2,6 +2,8 @@
  * Created by georgestrajan on 1/31/15.
  */
 
+"use strict";
+
 // returns an array of strings which are in 'rgb(R,G,B)' format
 function createColors(numberOfColorsToCreate) {
     var divsColorsArray =
@@ -31,4 +33,4 @@ function createColors(numberOfColorsToCreate) {
     }
 
     return createdColors;
-};
+}
