@@ -22,7 +22,7 @@ var app = http.createServer(function(req, res){
         var feedReq = request(feedUrl),
             feedparser = new FeedParser();
 
-        var first = true;
+        var first = true, firstItem = true;
 
         feedReq.on('error', function (error) {
             // handle any request errors
@@ -48,22 +48,42 @@ var app = http.createServer(function(req, res){
                 , meta = this.meta // **NOTE** the "meta" is always available in the context of the feedparser instance
                 , item;
 
-            while (item = stream.read()) {
-               // console.log('Got article: %s', item.title || item.description);
+            if (first) {
+                res.write(callback + '({' + '"feedTitle" : "' + meta.title + '", "items" : [');
+                first = false;
+            }
 
-                if (first) {
-                    res.write(callback + '([');
-                    first = false;
-                } else {
-                    res.write(',');
-                }
+            while (item = stream.read()) {
+                // console.log('Got article: %s', item.title || item.description);
+
+                    if (firstItem) {
+                        firstItem = false;
+                    } else {
+                        res.write(',');
+                    }
+
+                // TODO : To improve perf, we should only send title and description. Right now we are sending a lot of junk!!
                 res.write(JSON.stringify(item));
 
             }
+
+            //while (item = stream.read()) {
+            //   // console.log('Got article: %s', item.title || item.description);
+            //
+            //    if (first) {
+            //        res.write(callback + '([');
+            //        first = false;
+            //    } else {
+            //        res.write(',');
+            //    }
+            //    res.write(JSON.stringify(item));
+            //
+            //}
         });
 
         feedparser.on('end', function () {
-            res.write(']);');
+            res.write(']});');
+            //res.write(']);');
         });
 
         setTimeout(function () {

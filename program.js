@@ -66,7 +66,7 @@
                     feedDiv.innerHTML = '<b>' + returnFeed[i].title + '</b><br>' + remove_tags(returnFeed[i].description);
                 }
             }
-            ;
+
 
             //worker.terminate();
 
